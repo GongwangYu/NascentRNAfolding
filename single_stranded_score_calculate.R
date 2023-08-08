@@ -42,6 +42,8 @@ library(stringr)
 }
 
 #############
+#Here, the threshold of RT stop/nt can be set to 1, 2, 4, in our analysis, we set this threshold to 1
+coverage_threshold=1
 
 for(mysample in c("vivo")){
   allGene<-intersect((eval(parse(text = sprintf("midif_pol_%s",mysample))))$gene.x%>%unique,
@@ -65,8 +67,8 @@ for(mysample in c("vivo")){
     mydata.fame$reads<-eachGene$reads[match(mydata.fame$base,eachGene$base)]
     mydata.fame[is.na(mydata.fame)] <- 0
     rt.mean<-mean(mydata.fame$reads)
-    coverage=1
-    if(rt.mean<coverage){return(NULL)}
+   
+    if(rt.mean< coverage_threshold){return(NULL)}
     mydata.fame$react<-mydata.fame$reads*Ksample+1
     dfdat_sample<-mydata.fame%>%filter(base>0)
     
